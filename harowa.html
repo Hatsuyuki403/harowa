@@ -6,19 +6,35 @@
     <script src="https://unpkg.com/jspsych@7.0.0"></script>
     <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@1.0.0"></script>
     <script src="https://unpkg.com/@jspsych/plugin-html-button-response@1.0.0"></script>
+    <script src="https://unpkg.com/@jspsych-contrib/plugin-pipe"></script>
     <link href="https://unpkg.com/jspsych@7.0.0/css/jspsych.css" rel="stylesheet" type="text/css" />
   </head>
   
   <body>
   <script>
+    /*jsPsychの初期化*/
     const jsPsych = initJsPsych();
-
+    
+    /*参加者のIDを作成，ファイル名を設定*/
+    const subject_id = jsPsych.randomization.randomID(10);
+    const filename = `${subject_id}.csv`;
+    
+    /*課題*/
     const hello_trial = {
       type: jsPsychHtmlKeyboardResponse,
       stimulus: 'Hello world!'
     }
+    
+    /*データを保存*/
+    const save_data = {
+      type: jsPsychPipe,
+      action: "save",
+      experiment_id: "AfPzVZbGrOFy",
+      filename: filename,
+      data_string: ()=>jsPsych.data.get().csv()
+    };
 
-    jsPsych.run([hello_trial]);
+    jsPsych.run([hello_trial, save_data]);
   </script>
   </body>
 </html>
